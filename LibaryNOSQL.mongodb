@@ -1,0 +1,525 @@
+db.Library.drop()
+db.Books.drop()
+db.Journals.drop()
+db.LibraryMembersDetails.drop()
+db.Books_Issuedandreturn_Records.drop()
+db.Books_Fine_Amount.drop()
+db.Journals_Issuedandreturn_Records.drop()
+db.Journals_Fine_Amount.drop()
+
+
+db.createCollection("Library")
+
+db.Library.insertOne({
+    Library_ID: 5,
+    Name: 'IT_Library',
+    Phone: 557894
+ });
+
+ db.createCollection("Books")
+const booksData = [
+    { Book_ID: 101, Book_Name: 'DSA', Book_Author: 'Ram Kumar' },
+    { Book_ID: 102, Book_Name: 'DataBase', Book_Author: 'Shyam Kumar' },
+    { Book_ID: 103, Book_Name: 'C++', Book_Author: 'Alice Poudel' },
+    { Book_ID: 104, Book_Name: 'Linear Algebra', Book_Author: 'Pritam Kumar' },
+    { Book_ID: 105, Book_Name: 'Statistics', Book_Author: 'Purna Bdr Kc' }
+  ];
+  
+  // Insert data using a loop
+  for (const book of booksData) {
+    db.Books.insertOne(book);
+}
+// Assuming you already have a "Library" collection with Library_ID = 5
+
+// Journals Collection
+db.createCollection("Journals");
+
+// Function to insert a journal document
+function addJournal(Journal_ID, Library_ID, Journal_Author, Journal_Name) {
+  db.Journals.insertOne({
+    Journal_ID: Journal_ID,
+    Library_ID: Library_ID,
+    Journal_Author: Journal_Author,
+    Journal_Name: Journal_Name
+  });
+}
+
+// Adding The Journals
+var Library_ID = 5; // Use the appropriate Library_ID
+var Journal_Details = [
+  'Pratiba Patel|Web Development',
+  'Alice Pratap|Face Recognition',
+  'Sushma Kiran|AI',
+  'Dina Nath|ChatBot'
+];
+
+// Loop through the journal details and add each journal
+for (var i = 0; i < Journal_Details.length; i++) {
+  // Split the journal details into author and title
+  var details = Journal_Details[i].split('|');
+  var Journal_Author = details[0];
+  var Journal_Name = details[1];
+
+  // Specify the Journal_ID (replace with your desired value)
+  var Journal_ID = 200 + i; // Replace with your desired logic for Journal_ID
+
+  // Call the addJournal function with the specified Journal_ID
+  addJournal(Journal_ID, Library_ID, Journal_Author, Journal_Name);
+}
+
+
+// Create Library Members Details collection
+db.createCollection("LibraryMembersDetails");
+
+// Insert documents into the MongoDB collection
+db.LibraryMembersDetails.insertMany([
+  {
+    Member_Name: 'Ram Pratap',
+    Address: 'Kathmandu',
+    Joined_date: new Date(),
+    Member_Details: {
+      Member_ID: 1,
+      Member_Role: 'Teacher',
+      Department: 'IT',
+      Mobile_number: 9843215987
+    }
+  },
+  {
+    Member_Name: 'Bikas Nath',
+    Address: 'Birgunj',
+    Joined_date: new Date(),
+    Member_Details: {
+      Member_ID: 2,
+      Member_Role: 'Student',
+      Department: 'IT',
+      Mobile_number: 9843215887
+    }
+  },
+  {
+    Member_Name: 'Sita Nuepane',
+    Address: 'Sagarmatha',
+    Joined_date: new Date(),
+    Member_Details: {
+      Member_ID: 3,
+      Member_Role: 'Student',
+      Department: 'Engineering',
+      Mobile_number: 9843217987
+    }
+  },
+  {
+    Member_Name: 'Prabesh Bhujel',
+    Address: 'Kathmandu',
+    Joined_date: new Date(),
+    Member_Details: {
+      Member_ID: 4,
+      Member_Role: 'Teacher',
+      Department: 'Engineering',
+      Mobile_number: 9847215987
+    }
+  },
+  {
+    Member_Name: 'Shyam Kumar',
+    Address: 'Pokhara',
+    Joined_date: new Date(),
+    Member_Details: {
+      Member_ID: 5,
+      Member_Role: 'Teacher',
+      Department: 'IT',
+      Mobile_number: 98437715987
+    }
+  }
+]);
+
+db.createCollection("Books_Issuedandreturn_Records")
+db.createCollection("Books_Fine_Amount")
+// Function to calculate the difference in days between two dates
+function calculateDaysDifference(start, end) {
+    return (end - start) / (1000 * 60 * 60 * 24); // milliseconds in a day
+  }
+  
+  // Array of documents to insert
+  var documentToInsertForBook_Issuedandreturn_Records = [
+    {
+      "TRANCTION_BOOK_ID": 1,
+      "ISSUEDER_ID": 1,
+      "ISSUEDER_NAME": "Ram Kumar",
+      "BOOK_ID": 101,
+      "BOOK_NAME": "DSA",
+      "ISSUED_DATE": ISODate("2022-09-01T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2022-09-21T00:00:00.000Z")
+    },
+    {
+      "TRANCTION_BOOK_ID": 2,
+      "ISSUEDER_ID": 2,
+      "ISSUEDER_NAME": "Bikas Nath",
+      "BOOK_ID": 103,
+      "BOOK_NAME": "C++",
+      "ISSUED_DATE": ISODate("2022-09-06T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2022-09-26T00:00:00.000Z")
+    },
+    {
+      "TRANCTION_BOOK_ID": 3,
+      "ISSUEDER_ID": 3,
+      "ISSUEDER_NAME": "Sita Nuepane",
+      "BOOK_ID": 102,
+      "BOOK_NAME": "DataBase",
+      "ISSUED_DATE": ISODate("2022-09-07T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2022-09-08T00:00:00.000Z")
+    },
+    {
+      "TRANCTION_BOOK_ID": 4,
+      "ISSUEDER_ID": 4,
+      "ISSUEDER_NAME": "Prabesh Bhujel",
+      "BOOK_ID": 105,
+      "BOOK_NAME": "Statistics",
+      "ISSUED_DATE": ISODate("2022-09-09T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2023-01-21T00:00:00.000Z")
+    }
+  ];
+  
+  // Loop through each document to calculate Day_Issued and FINE_AMOUNT
+  documentToInsertForBook_Issuedandreturn_Records.forEach(function (document) {
+    document.Day_Issued = calculateDaysDifference(document.ISSUED_DATE, document.RETRUN_DATE);
+  
+    // Calculate FINE_AMOUNT based on Day_Issued
+    if (document.Day_Issued > 10 && document.Day_Issued <= 20) {
+      document.FINE_AMOUNT = 50;
+    } else if (document.Day_Issued > 20 && document.Day_Issued <= 30) {
+      document.FINE_AMOUNT = 100;
+    } else {
+      document.FINE_AMOUNT = 500;
+    }
+  
+    // Insert each document into the respective collections
+    db.Books_Issuedandreturn_Records.insertOne(document);
+  
+    db.Books_Fine_Amount.insertOne({
+      "TRANCTION_BOOK_ID": document.TRANCTION_BOOK_ID,
+      "ISSUEDER_ID":document.ISSUEDER_ID,
+      "FINE_AMOUNT": document.FINE_AMOUNT
+    });
+  });
+    
+
+
+db.createCollection("Journals_Issuedandreturn_Records");
+db.createCollection("Journals_Fine_Amount");
+
+  
+  // Insert document into Journals_Issuedandreturn_Records
+ // Define the documents to insert
+var documentsToInsertForJournals_Issuedandreturn_Records = [
+    {
+      "TRANCTION_JOURNAL_ID": 1,
+      "ISSUEDER_ID": 1,
+      "ISSUEDER_NAME": "Ram Pratap",
+      "JOURNAL_ID": 201,
+      "JOURNAL_NAME": "Web Development",
+      "ISSUED_DATE": ISODate("2022-09-01T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2022-09-21T00:00:00.000Z")
+    },
+    {
+      "TRANCTION_JOURNAL_ID": 2,
+      "ISSUEDER_ID": 3,
+      "ISSUEDER_NAME": "Sita Nuepane",
+      "JOURNAL_ID": 203,
+      "JOURNAL_NAME": "AI",
+      "ISSUED_DATE": ISODate("2022-09-03T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2022-09-05T00:00:00.000Z")
+    },
+    {
+      "TRANCTION_JOURNAL_ID": 3,
+      "ISSUEDER_ID": 2,
+      "ISSUEDER_NAME": "Bikas Nath",
+      "JOURNAL_ID": 204,
+      "JOURNAL_NAME": "ChatBot",
+      "ISSUED_DATE": ISODate("2022-09-10T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2022-09-30T00:00:00.000Z")
+    },
+    {
+      "TRANCTION_JOURNAL_ID": 4,
+      "ISSUEDER_ID": 4,
+      "ISSUEDER_NAME": "Prabesh Bhujel",
+      "JOURNAL_ID": 202,
+      "JOURNAL_NAME": "Face Recognition",
+      "ISSUED_DATE": ISODate("2022-09-15T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2023-01-16T00:00:00.000Z")
+    },
+    {
+      "TRANCTION_JOURNAL_ID": 5,
+      "ISSUEDER_ID": 5,
+      "ISSUEDER_NAME": "Shyam Kumar",
+      "JOURNAL_ID": 204,
+      "JOURNAL_NAME": "ChatBot",
+      "ISSUED_DATE": ISODate("2022-09-15T12:00:00.000Z"),
+      "ISSUED_TYPE_QUANTITY": 1,
+      "RETRUN_DATE": ISODate("2023-01-02T00:00:00.000Z")
+    }
+  ];
+  
+  // Loop through each document to calculate Day_Issued and FINE_AMOUNT
+  documentsToInsertForJournals_Issuedandreturn_Records.forEach(function (document) {
+    // Calculate Day_Issued
+    document.Day_Issued = calculateDaysDifference(document.ISSUED_DATE, document.RETRUN_DATE);
+  
+    // Calculate FINE_AMOUNT based on Day_Issued
+    if (document.Day_Issued > 10 && document.Day_Issued <= 20) {
+      document.FINE_AMOUNT = 100;
+    } else if (document.Day_Issued > 20 && document.Day_Issued <= 30) {
+      document.FINE_AMOUNT = 200;
+    } else {
+      document.FINE_AMOUNT = 800;
+    }
+  });
+  
+  // Insert multiple documents into Journals_Issuedandreturn_Records collection
+  db.Journals_Issuedandreturn_Records.insertMany(documentsToInsertForJournals_Issuedandreturn_Records);
+  
+  // Insert corresponding values into Journals_Fine_Amount collection
+  var documentsToInsertForFineAmount = documentsToInsertForJournals_Issuedandreturn_Records.map(function (document) {
+    return {
+      "TRANCTION_JOURNAL_ID": document.TRANCTION_JOURNAL_ID,
+      "ISSUEDER_ID":document.ISSUEDER_ID,
+      "FINE_AMOUNT": document.FINE_AMOUNT
+    };
+  });
+  
+  db.Journals_Fine_Amount.insertMany(documentsToInsertForFineAmount);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------QN-1JOIN-------------------------------------------------------------------
+db.Books_Issuedandreturn_Records.aggregate([
+    {
+      $lookup: {
+        from: "LibraryMembersDetails",
+        localField: "ISSUEDER_ID",
+        foreignField: "Member_Details.Member_ID",
+        as: "memberDetails"
+      }
+    },
+    {
+      $lookup: {
+        from: "Books",
+        localField: "BOOK_ID",
+        foreignField: "Book_ID",
+        as: "bookDetails"
+      }
+    },
+    {
+      $lookup: {
+        from: "Books_Fine_Amount",
+        localField: "TRANCTION_BOOK_ID",
+        foreignField: "TRANCTION_BOOK_ID",
+        as: "fineDetails"
+      }
+    },
+    {
+      $match: {
+        "fineDetails.FINE_AMOUNT": { $gt: 50 }
+      }
+    },
+    {
+      $project: {
+        "memberDetails.Member_Name": 1,
+        "memberDetails.Address": 1,
+        "memberDetails.Member_Details.Member_ID": 1,
+        "memberDetails.Member_Details.Member_Role": 1,
+        "memberDetails.Member_Details.Department": 1,
+        "bookDetails.BOOK_ID": 1,
+        "bookDetails.BOOK_NAME": 1,
+        "DAYS_ISSUED": 1,
+        "fineDetails.FINE_AMOUNT": 1
+      }
+    }
+  ]);
+  //   -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------QN-2 UNION-------------------------------------------------------------------------
+db.Books_Issuedandreturn_Records.aggregate([
+    {
+      $lookup: {
+        from: "LibraryMembersDetails",
+        localField: "ISSUEDER_ID",
+        foreignField: "Member_Details.Member_ID",
+        as: "memberDetails"
+      }
+    },
+    {
+      $lookup: {
+        from: "Books",
+        localField: "BOOK_ID",
+        foreignField: "Book_ID",
+        as: "bookDetails"
+      }
+    },
+    {
+      $lookup: {
+        from: "Books_Fine_Amount",
+        localField: "TRANCTION_BOOK_ID",
+        foreignField: "TRANCTION_JOURNAL_ID",
+        as: "fineDetails"
+      }
+    },
+    {
+      $match: {
+        "fineDetails.FINE_AMOUNT": { $gt: 49 }
+      }
+    },
+    {
+      $project: {
+        "memberDetails.Member_Name": 1,
+        "memberDetails.Address": 1,
+        "memberDetails.Member_Details.Member_ID": 1,
+        "memberDetails.Member_Details.Member_Role": 1,
+        "memberDetails.Member_Details.Department": 1,
+        "BOOKS_ISSUEDANDRETURN_RECORDS.BOOK_ID": 1,
+        "BOOKS_ISSUEDANDRETURN_RECORDS.BOOK_NAME": 1,
+        "BOOKS_ISSUEDANDRETURN_RECORDS.DAYS_ISSUED": 1,
+        "fineDetails.FINE_AMOUNT": 1
+      }
+    },
+    {
+      $unionWith: {
+        coll: "Journals_Issuedandreturn_Records",
+        pipeline: [
+          {
+            $lookup: {
+              from: "LibraryMembersDetails",
+              localField: "ISSUEDER_ID",
+              foreignField: "Member_Details.Member_ID",
+              as: "memberDetails"
+            }
+          },
+          {
+            $lookup: {
+              from: "Journals",
+              localField: "JOURNAL_ID",
+              foreignField: "Journal_ID",
+              as: "journalDetails"
+            }
+          },
+          {
+            $lookup: {
+              from: "Journals_Fine_Amount",
+              localField: "TRANCTION_JOURNAL_ID",
+              foreignField: "TRANCTION_JOURNAL_ID",
+              as: "fineDetails"
+            }
+          },
+          {
+            $match: {
+              "fineDetails.FINE_AMOUNT": { $gte: 100 }
+            }
+          },
+          {
+            $project: {
+              "memberDetails.Member_Name": 1,
+              "memberDetails.Address": 1,
+              "memberDetails.Member_Details.Member_ID": 1,
+              "memberDetails.Member_Details.Member_Role": 1,
+              "memberDetails.Member_Details.Department": 1,
+              "JOURNALS_ISSUEDANDRETURN_RECORDS.JOURNAL_ID": 1,
+              "JOURNALS_ISSUEDANDRETURN_RECORDS.JOURNAL_NAME": 1,
+              "JOURNALS_ISSUEDANDRETURN_RECORDS.DAYS_ISSUED": 1,
+              "fineDetails.FINE_AMOUNT": 1
+            }
+          }
+        ]
+      }
+    }
+  ]);
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------Q N-3----------------------------------------------------------------
+db.LibraryMembersDetails.aggregate([
+    {
+      $lookup: {
+        from: "Books_Fine_Amount",
+        localField: "Member_Details.Member_ID",
+        foreignField: "ISSUEDER_ID",
+        as: "fineDetails"
+      }
+    },
+    {
+      $match: {
+        "fineDetails.FINE_AMOUNT": { $gt: 50 }
+      }
+    },
+    {
+      $project: {
+        "Member_Name": 1,
+        "Address": 1,
+        "Member_Details.Member_Role": 1,
+        "Member_Details.Department": 1,
+        "Member_Details.Mobile_number": 1,
+        "_id": 0
+      }
+    }
+  ]);
+  
+// -------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------Q N-4(Partation)-------------------------------------------------------------------
+db.Books_Fine_Amount.aggregate(
+    {
+        $group: {
+            _id:'$TRANCTION_BOOK_ID',
+           
+            FINE_AMOUNT: { $push: "$FINE_AMOUNT" },
+            min_Fine: { $min: '$FINE_AMOUNT' },
+            max_Fine: { $max: '$FINE_AMOUNT' },
+            average_Fine: { $avg: '$FINE_AMOUNT' }
+        }
+    }
+) 
+
+//   ---------------------------------------------------------------------------- Q.N-5-CURRENT_TIMESTAMP-----------------------------------------------------------
+
+var query = {
+    $expr: {
+        $and: [
+            { $gte: ["$Joined_date", { $subtract: [new Date(), { $multiply: [365, 24, 60, 60, 1000] }] }] },
+            { $lt: ["$Joined_date", new Date()] }
+        ]
+    }
+};
+
+// Projection to include only specific fields in the result
+var projection = {
+    Member_Name: 1,
+    Address: 1,
+    Member_ID: 1,
+    Member_Role: 1,
+    Department: 1,
+    Joined_date: 1,
+    _id: 0 // Exclude the default _id field if you don't want it in the result
+};
+
+// Execute the find query
+var result = db.LibraryMembersDetails.find(query, projection);
+
+// Display the result
+result.forEach(function (doc) {
+    printjson(doc);
+});
